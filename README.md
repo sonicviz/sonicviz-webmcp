@@ -69,7 +69,7 @@ In an ordinary browser, the complete direct interface still works; only agent to
 
 After opening SonicViz, ask the browser agent:
 
-> Open Practice and create an intermediate twelve-bar G blues exercise at 72 BPM for a C Major Richter harmonica using seed 1234. Show Score + TAB, loop bars 9 through 12, and explain how the same phrase maps to harmonica and guitar. Do not start playback until I allow it.
+> Open Practice and create an intermediate 4-bar in G with a 1-4-5 chord progression at 80 BPM for a C Major Richter harmonica, using seed 1233, with guitar in Open G. Show Score + TAB, loop bars 1 through 2, and explain how the same phrase maps to harmonica and guitar. Do not start playback until I allow it.
 
 The agent should navigate explicitly, generate one deterministic lesson, update the visible controls and tracks, and report the resulting musical state.
 
