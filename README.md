@@ -54,7 +54,7 @@ SonicViz does the deterministic music calculations. The external agent interpret
 
 ## Try it
 
-**Live application:** https://sonicviz.com/sonicviz/
+**Live application:** https://sonicviz.github.io/sonicviz-webmcp/
 
 No account, API key, backend, or paid service is required.
 
