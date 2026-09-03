@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SonicViz — Agent-Native Music Practice</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<main>
+  <div class="eyebrow">See it. Hear it. Play it.</div>
+  <h1>SonicViz</h1>
+  <p class="intro">Turn musical ideas into connected guitar, harmonica, score, TAB, and practice views you can hear, understand, and play.</p>
+
+  <div class="instrument-tabs" role="tablist" aria-label="Instrument">
+    <button id="fretboardTab" role="tab" data-view="fretboard" aria-controls="fretboardPanel" aria-selected="true">Fretboard</button>
+    <button id="harmonicaTab" role="tab" data-view="harmonica" aria-controls="harmonicaPanel" aria-selected="false">Harmonica</button>
+    <button id="practiceTab" role="tab" data-view="practice" aria-controls="practicePanel" aria-selected="false">Practice</button>
+  </div>
+
+  <div id="fretboardPanel" class="layout tab-panel" role="tabpanel" aria-labelledby="fretboardTab">
+    <aside class="panel controls">
+      <h2>Explore</h2>
+      <label>Tuning <select id="tuning"></select></label>
+      <label>Chord root <select id="chordRoot"></select></label>
+      <label class="theory-control">Chord <select id="chord"></select><span id="fretChordTones" class="theory-tone-list" aria-live="polite"></span></label>
+      <label>Scale root <select id="scaleRoot"></select></label>
+      <label class="theory-control">Scale <select id="scale"></select><span id="fretScaleTones" class="theory-tone-list" aria-live="polite"></span></label>
+      <div class="action-grid">
+        <button id="showChord" aria-pressed="false">Chord</button>
+        <button id="showScale" aria-pressed="false">Scale</button>
+        <button id="showIntervals" aria-pressed="false">Intervals</button>
+        <button id="clear">Clear</button>
+        <button id="random">Surprise me</button>
+      </div>
+    </aside>
+    <section class="workspace">
+      <div id="fretQuickChords" class="panel quick-chord-panel" aria-label="Diatonic chords"></div>
+      <div class="panel display">
+        <div id="fretMarkers" class="fret-markers" aria-hidden="true"></div>
+        <div id="fretboard" class="fretboard" aria-label="Interactive fretboard"></div>
+        <div class="theory-legend fret-theory-legend" aria-label="Fretboard color legend">
+          <div class="interval-legend-heading">Interval colors</div>
+          <div id="fretIntervalLegend" class="interval-legend"></div>
+          <div class="membership-legend">
+            <span><i class="membership-shape chord-shape"></i>chord</span>
+            <span><i class="membership-shape scale-shape"></i>scale</span>
+            <span><i class="membership-shape both-shape"></i>shared · chord / scale split</span>
+            <span><i class="root-mark chord-root-mark"></i>chord root</span>
+            <span><i class="root-mark scale-root-mark"></i>scale root</span>
+          </div>
+        </div>
+      </div>
+      <div class="insights">
+        <article class="panel">
+          <h2 id="title">C major · major scale</h2>
+          <p id="notes" class="notes"></p>
+          <p id="detail" class="answer"></p>
+        </article>
+        <article class="panel">
+          <h2>Relationship</h2>
+          <p id="relationship" class="answer"></p>
+        </article>
+        <article class="panel agent">
+          <h2>WebMCP status</h2>
+          <p id="mcpStatus" class="status">Preparing agent tools…</p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <div id="harmonicaPanel" class="layout harmonica-layout tab-panel" role="tabpanel" aria-labelledby="harmonicaTab" hidden>
+    <aside class="panel controls harp-controls">
+      <h2>Harmonica setup</h2>
+      <label>Tuning <select id="harpTuning"></select></label>
+      <label>Harp key <select id="harpKey"></select></label>
+      <label>Position <select id="harpPosition"></select></label>
+      <label>Chord root <select id="harpChordRoot"></select></label>
+      <label class="theory-control">Chord <select id="harpChord"></select><span id="harpChordTones" class="theory-tone-list" aria-live="polite"></span></label>
+      <label>Scale root <select id="harpScaleRoot"></select></label>
+      <label class="theory-control">Scale <select id="harpScale"></select><span id="harpScaleTones" class="theory-tone-list" aria-live="polite"></span></label>
+      <div class="action-grid">
+        <button id="harpShowChord" aria-pressed="false">Chord</button>
+        <button id="harpShowScale" aria-pressed="false">Scale</button>
+        <button id="harpIntervals" aria-pressed="false">Intervals</button>
+        <button id="harpClearHighlights">Clear</button>
+        <button id="harpOverbends" aria-pressed="false">Overbends</button>
+      </div>
+    </aside>
+    <section class="workspace">
+      <div id="harpQuickChords" class="panel quick-chord-panel" aria-label="Diatonic chords"></div>
+      <div class="panel harp-stage">
+        <div class="harp-head">
+          <div>
+            <h2 id="harpTitle">C diatonic · 1st position</h2>
+            <p>Click a note to hear it and add its symbol to the practice line.</p>
+          </div>
+          <div class="breath-legend">
+            <span><b>+</b> blow</span>
+            <span><b>−</b> draw</span>
+            <span><b>′</b> bend</span>
+            <span><b>°</b> overbend</span>
+          </div>
+        </div>
+        <div class="harp-theory-legend" aria-label="Harmonica color legend">
+          <div class="interval-legend-heading">Interval colors</div>
+          <div id="intervalLegend" class="interval-legend"></div>
+          <div class="membership-legend">
+            <span><i class="membership-shape chord-shape"></i>chord</span>
+            <span><i class="membership-shape scale-shape"></i>scale</span>
+            <span><i class="membership-shape both-shape"></i>shared · chord / scale split</span>
+            <span><i class="root-mark chord-root-mark"></i>chord root</span>
+            <span><i class="root-mark scale-root-mark"></i>scale root</span>
+          </div>
+        </div>
+        <div class="harp-shell"><div id="harpGrid" class="harp-grid" aria-label="Interactive 10-hole diatonic harmonica"></div></div>
+      </div>
+      <div class="panel phrase-panel">
+        <div class="phrase-top">
+          <div>
+            <h2>Practice line</h2>
+            <p class="answer">Build a phrase directly from the harp.</p>
+          </div>
+          <div class="phrase-actions">
+            <button id="playPhrase">Play</button>
+            <button id="copyPhrase">Copy</button>
+            <button id="clearPhrase">Clear</button>
+          </div>
+        </div>
+        <div id="tabStrip" class="tab-strip" aria-live="polite"></div>
+      </div>
+      <div class="panel harp-readout">
+        <div><span>Harp</span><strong id="harpSummary">C Major Richter</strong></div>
+        <div><span>Position key</span><strong id="positionSummary">C</strong></div>
+        <div><span>Selected tone</span><strong id="toneSummary">None</strong></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="practicePanel" class="layout practice-layout tab-panel" role="tabpanel" aria-labelledby="practiceTab" hidden>
+    <aside class="panel controls practice-controls">
+      <h2>Generate lesson</h2>
+      <label>Seed <input id="practiceSeed" type="number" min="0" max="2147483647" value="1234" /></label>
+      <label>Key <select id="practiceKey"></select></label>
+      <label>Level <select id="practiceLevel">
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+        <option value="pro">Pro</option>
+      </select></label>
+      <label>Style <select id="practiceStyle">
+        <option value="blues">12-bar blues</option>
+        <option value="I-IV-V-I">I-IV-V-I</option>
+        <option value="I-vi-IV-V">I-vi-IV-V</option>
+        <option value="ii-V-I">ii-V-I</option>
+        <option value="minor">Minor i-VI-III-VII</option>
+      </select></label>
+      <label>Bars <select id="practiceBars">
+        <option>4</option><option selected>8</option><option>12</option>
+      </select></label>
+      <label>Tempo <input id="practiceTempo" type="number" min="40" max="180" value="72" /></label>
+      <label>Harp key <select id="practiceHarpKey"></select></label>
+      <label>Harp tuning <select id="practiceHarpTuning"></select></label>
+      <label>Guitar tuning <select id="practiceGuitarTuning"></select></label>
+      <button id="generatePractice" class="practice-generate">Generate</button>
+    </aside>
+    <section class="workspace practice-workspace">
+      <div class="panel practice-transport">
+        <div class="practice-heading">
+          <div>
+            <h2 id="practiceTitle">Practice lesson</h2>
+            <p id="practiceSummary" class="answer"></p>
+          </div>
+          <div class="transport-actions" aria-label="Practice transport">
+            <button id="practiceRestart">Restart</button>
+            <button id="practicePrevious">Previous</button>
+            <button id="practicePlay">Play</button>
+            <button id="practiceNext">Next</button>
+            <button id="practiceLoop" aria-pressed="false">Loop</button>
+          </div>
+        </div>
+        <div class="practice-loop-range" aria-label="Loop phrase">
+          <strong>Loop phrase</strong>
+          <label>From bar <select id="practiceLoopStart"></select></label>
+          <label>Through bar <select id="practiceLoopEnd"></select></label>
+          <label class="agent-playback-toggle"><input id="practiceAgentPlayback" type="checkbox" /> Allow agent playback</label>
+        </div>
+        <div class="playhead-rail" aria-hidden="true"><span id="practicePlayhead"></span></div>
+        <div id="practicePosition" class="practice-position" aria-live="polite"></div>
+      </div>
+      <section class="practice-brief" aria-labelledby="practiceBriefTitle">
+        <div class="practice-brief-heading">
+          <h2 id="practiceBriefTitle">Lesson brief</h2>
+          <span>Computed from the current exercise</span>
+        </div>
+        <div id="practiceBrief" class="practice-brief-grid"></div>
+        <p id="practiceFocus" class="practice-focus"></p>
+      </section>
+      <div class="panel practice-instrument">
+        <div class="practice-instrument-heading">
+          <div>
+            <h2>Instrument view</h2>
+            <p id="practiceInstrumentReadout" class="answer" aria-live="polite"></p>
+            <p id="practiceNextReadout" class="next-note-readout" aria-live="polite"></p>
+          </div>
+          <div class="practice-view-controls">
+            <div class="instrument-switch" aria-label="Practice instrument view">
+              <button id="practiceGuitarView" aria-pressed="false">Guitar</button>
+              <button id="practiceHarmonicaView" aria-pressed="true">Harmonica</button>
+            </div>
+            <label class="next-note-toggle"><input id="practiceNextPreview" type="checkbox" checked /> Preview next</label>
+          </div>
+        </div>
+        <div id="practiceInstrumentLegend" class="practice-instrument-legend" aria-label="Harmonica technique colors"></div>
+        <div id="practiceHarmonicaOptions" class="practice-guitar-options">
+          <label>Octave <select id="practiceHarmonicaOctave">
+            <option value="0">Original octave</option>
+            <option value="1">One octave higher</option>
+            <option value="2">Two octaves higher</option>
+          </select></label>
+        </div>
+        <div id="practiceGuitarOptions" class="practice-guitar-options" hidden>
+          <label>Octave <select id="practiceGuitarOctave">
+            <option value="0">Original octave</option>
+            <option value="-1">One octave lower</option>
+            <option value="-2">Two octaves lower</option>
+          </select></label>
+          <label>Fretboard path <select id="practiceGuitarPath">
+            <option value="vertical">Across strings</option>
+            <option value="horizontal">Along strings</option>
+          </select></label>
+        </div>
+        <div id="practiceInstrumentStage" class="practice-instrument-stage"></div>
+      </div>
+      <div class="panel practice-score">
+        <div class="practice-score-heading">
+          <h2>Progression</h2>
+          <div class="practice-backing-controls">
+            <label>Backing <select id="practiceBackingInstrument">
+              <option value="guitar">Guitar</option>
+              <option value="piano" selected>Piano</option>
+            </select></label>
+            <label>Attacks per bar <select id="practiceBackingRhythm">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="4">4</option>
+            </select></label>
+            <button id="practiceBackingMute" aria-pressed="false" aria-label="Mute backing chords">Mute chords</button>
+          </div>
+        </div>
+        <div id="practiceProgression" class="progression-track"></div>
+        <div class="practice-timeline-heading">
+          <h2>Shared melody</h2>
+          <div class="practice-timeline-actions">
+            <div class="practice-timeline-switch" role="group" aria-label="Shared melody view">
+              <button id="practiceCompactTimeline" aria-pressed="true">Compact</button>
+              <button id="practiceNotationTimeline" aria-pressed="false">Score + TAB</button>
+            </div>
+            <button id="practiceMelodyMute" aria-pressed="false" aria-label="Mute shared melody">Mute melody</button>
+          </div>
+        </div>
+        <div id="practiceTracks" class="practice-tracks"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="theory.js"></script>
+<script src="session.js"></script>
+<script src="audio.js"></script>
+<script src="workspace.js"></script>
+<script src="fretboard.js"></script>
+<script src="harmonica.js"></script>
+<script src="practice.js"></script>
+<script src="webmcp.js"></script>
+</body>
+</html>

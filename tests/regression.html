@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SonicViz regression tests</title>
+  <style>
+    :root { color-scheme:dark; font-family:Consolas,monospace; background:#0d111a; color:#f1f3f7; }
+    body { max-width:860px; margin:0 auto; padding:32px 18px; }
+    h1 { font:700 1.5rem Georgia,serif; }
+    #summary { color:#aeb7c8; }
+    ol { display:grid; gap:7px; padding:0; list-style:none; }
+    li { padding:10px 12px; border:1px solid #343c4f; border-radius:6px; background:#141a27; }
+    .pass { border-color:#379f69; }
+    .fail { border-color:#e96666; color:#ffd9d9; }
+    iframe { position:absolute; left:-10000px; width:1280px; height:800px; border:0; }
+  </style>
+</head>
+<body>
+  <h1>SonicViz regression tests</h1>
+  <p id="summary" aria-live="polite">Loading application fixture...</p>
+  <ol id="results"></ol>
+  <iframe id="fixture" src="../index.html?regression-fixture" title="SonicViz test fixture"></iframe>
+  <script src="regression.js?v=30"></script>
+</body>
+</html>
